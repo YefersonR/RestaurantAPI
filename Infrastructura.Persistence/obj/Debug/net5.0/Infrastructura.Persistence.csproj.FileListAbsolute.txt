@@ -1,0 +1,17 @@
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Infrastructura.Persistence.deps.json
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Infrastructura.Persistence.dll
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\ref\Infrastructura.Persistence.dll
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Infrastructura.Persistence.pdb
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Core.Application.dll
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Core.Domain.dll
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Core.Application.pdb
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\bin\Debug\net5.0\Core.Domain.pdb
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.AssemblyInfo.cs
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.csproj.CopyComplete
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.dll
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\ref\Infrastructura.Persistence.dll
+C:\Users\user\source\repos\ApiRestaurante\Infrastructura.Persistence\obj\Debug\net5.0\Infrastructura.Persistence.pdb
