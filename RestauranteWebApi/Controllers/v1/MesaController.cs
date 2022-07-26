@@ -1,6 +1,7 @@
 ﻿using Core.Application.Enums;
 using Core.Application.Interfaces.Services;
 using Core.Application.ViewModels.Mesa;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,15 +12,14 @@ using System.Threading.Tasks;
 namespace RestauranteWebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
+    [Authorize(Roles = "administrador,mesero")]
     public class MesaController : BaseApiController
     {
         private readonly IMesaService _mesaService;
-        private readonly IOrdenService _ordenService;
 
-        public MesaController(IMesaService mesaService, IOrdenService ordenService)
+        public MesaController(IMesaService mesaService)
         {
             _mesaService = mesaService;
-            _ordenService = ordenService;
         }
 
         [HttpPost]
@@ -93,8 +93,7 @@ namespace RestauranteWebApi.Controllers.v1
         {
             try
             {
-                var result = await _ordenService.GetAllAsync();
-                result = result.Where(plato=>plato.Mesa.Id == id).ToList();
+                var result = await _mesaService.GetAllOrdenesAsync(id);
                 if(result == null || result.Count == 0)
                 {
                     return NotFound();
@@ -107,7 +106,7 @@ namespace RestauranteWebApi.Controllers.v1
             }
         }
 
-        //[HttpGet]
+        //[HttpGet("{id}")]
         ////[ProducesResponseType(StatusCodes.Status200OK,Type=typeof(MesaViewModel))]
         ////[ProducesResponseType(StatusCodes.Status404NotFound)]
         ////[ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -117,18 +116,18 @@ namespace RestauranteWebApi.Controllers.v1
         //    {
         //        var result = await _mesaService.GetById(id);
 
-        //        if(result == null)
+        //        if (result == null)
         //        {
         //            return NotFound();
         //        }
         //        return Ok(result);
         //    }
-        //    catch(Exception ex)
+        //    catch (Exception ex)
         //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         //    }
         //}
-        
+
         ////[ProducesResponseType(StatusCodes.Status204NoContent)]
         ////[ProducesResponseType(StatusCodes.Status500InternalServerError)]
         //public async Task<IActionResult> ChangeStatus(int id, int idEstado)

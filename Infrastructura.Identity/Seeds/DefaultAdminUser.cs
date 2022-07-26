@@ -32,8 +32,7 @@ namespace Infrastructure.Identity.Seeds
                 if (user == null)
                 {
                     await userManager.CreateAsync(applicationAdmin,"123Pa$$word!");
-                    await userManager.AddToRoleAsync(applicationAdmin,Roles.Admin.ToString());
-                    await userManager.AddToRoleAsync(applicationAdmin,Roles.Client.ToString());
+                    await userManager.AddToRoleAsync(applicationAdmin,Roles.administrador.ToString());
 
                 }
             }

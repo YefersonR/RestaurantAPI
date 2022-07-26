@@ -11,5 +11,6 @@ namespace Core.Application.Interfaces.Services
 {
     public interface IOrdenService : IGenericService<OrdenSaveViewModel, OrdenViewModel, Orden>
     {
+        Task UpdateOrden(OrdenSaveViewModel vm, int ID);
     }
 }

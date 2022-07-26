@@ -1,4 +1,5 @@
-﻿using Core.Application.Interfaces.Repositories;
+﻿using Core.Application.Enums;
+using Core.Application.Interfaces.Repositories;
 using Core.Domain.Entities;
 using Infrastructure.Persistence.Contexts;
 using System;

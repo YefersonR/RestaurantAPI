@@ -13,8 +13,8 @@ namespace Infrastructure.Identity.Seeds
     {
         public static async Task Seeds(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
         {
-            await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Client.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.administrador.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Roles.mesero.ToString()));
 
         }
     }

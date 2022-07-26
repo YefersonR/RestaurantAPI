@@ -1,9 +1,11 @@
-﻿using Core.Domain.Entities;
+﻿using Core.Domain.Commons;
+using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Contexts
@@ -16,6 +18,24 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<Ingrediente> Ingredientes{ get; set; }
         public RestaurantContext(DbContextOptions<RestaurantContext> options): base(options)
         {}
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableBase>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.Created = DateTime.Now;
+                        entry.Entity.CreatedBy = "";
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.Updated = DateTime.Now;
+                        entry.Entity.UpdatedBy = "";
+                        break;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Primary Key
@@ -31,15 +51,15 @@ namespace Infrastructure.Persistence.Contexts
 
             #region Relationship
 
-            modelBuilder.Entity<Orden>()
-            .HasOne<Mesa>(orden => orden.Mesa);  
+            modelBuilder.Entity<Mesa>()
+            .HasMany<Orden>(orden => orden.Ordenes);
+  
 
             modelBuilder.Entity<Orden>()
                 .HasMany<Plato>(platos => platos.Platos);
 
             modelBuilder.Entity<Plato>()
-                .HasMany<Ingrediente>(ingrediente=> ingrediente.Ingrediente);
-
+                .HasMany<Ingrediente>(ingrediente => ingrediente.Ingrediente);
 
             #endregion
 

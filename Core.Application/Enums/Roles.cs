@@ -8,7 +8,7 @@ namespace Core.Application.Enums
 {
     public enum Roles
     {
-        Admin,
-        Client
+        administrador,
+        mesero
     }
 }

@@ -2,6 +2,7 @@ C:\Users\user\source\repos\ApiRestaurante\Core.Domain\bin\Debug\net5.0\Core.Doma
 C:\Users\user\source\repos\ApiRestaurante\Core.Domain\bin\Debug\net5.0\Core.Domain.dll
 C:\Users\user\source\repos\ApiRestaurante\Core.Domain\bin\Debug\net5.0\ref\Core.Domain.dll
 C:\Users\user\source\repos\ApiRestaurante\Core.Domain\bin\Debug\net5.0\Core.Domain.pdb
+C:\Users\user\source\repos\ApiRestaurante\Core.Domain\obj\Debug\net5.0\Core.Domain.csproj.AssemblyReference.cache
 C:\Users\user\source\repos\ApiRestaurante\Core.Domain\obj\Debug\net5.0\Core.Domain.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\user\source\repos\ApiRestaurante\Core.Domain\obj\Debug\net5.0\Core.Domain.AssemblyInfoInputs.cache
 C:\Users\user\source\repos\ApiRestaurante\Core.Domain\obj\Debug\net5.0\Core.Domain.AssemblyInfo.cs

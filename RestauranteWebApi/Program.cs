@@ -1,3 +1,4 @@
+using Infrastructura.Identity.Seeds;
 using Infrastructure.Identity.Models;
 using Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Hosting;
@@ -27,8 +28,9 @@ namespace RestauranteWebApi
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                     await DefaultRoles.Seeds(userManager, roleManager);
+                    await DefaultSuperAdmin.Seeds(userManager, roleManager);
                     await DefaultAdminUser.Seeds(userManager, roleManager);
-                    await DefaultClient.Seeds(userManager, roleManager);
+                    await DefaultMesero.Seeds(userManager, roleManager);
 
                 }
                 catch (Exception ex)

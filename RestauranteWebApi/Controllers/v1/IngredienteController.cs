@@ -1,5 +1,6 @@
 ﻿using Core.Application.Interfaces.Services;
 using Core.Application.ViewModels.Ingrediente;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace RestauranteWebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
+    [Authorize(Roles ="administrador")]
     public class IngredienteController : BaseApiController
     {
         private readonly IIngredienteService _ingredienteService;

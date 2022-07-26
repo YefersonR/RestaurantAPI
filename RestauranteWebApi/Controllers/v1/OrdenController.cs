@@ -1,6 +1,7 @@
 ﻿using Core.Application.Interfaces.Services;
 using Core.Application.ViewModels.Orden;
 using Core.Application.ViewModels.Ordenes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,9 +12,10 @@ using System.Threading.Tasks;
 namespace RestauranteWebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
+    [Authorize(Roles = "mesero")]
     public class OrdenController : BaseApiController
     {
-        private readonly IOrdenService _ordenService;
+        private readonly IOrdenService _ordenService;   
         public OrdenController(IOrdenService ordenService)
         {
             _ordenService = ordenService;
@@ -51,7 +53,7 @@ namespace RestauranteWebApi.Controllers.v1
                 {
                     return BadRequest();
                 }
-                await _ordenService.Update(viewModel,id);
+                await _ordenService.UpdateOrden(viewModel,id);
                 return NoContent();
             }
             catch(Exception ex)

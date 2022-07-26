@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Identity.Seeds
 {
-    public static class DefaultClient
+    public static class DefaultMesero
     {
         public static async Task Seeds(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
         {
@@ -29,7 +29,7 @@ namespace Infrastructure.Identity.Seeds
                 if (user == null)
                 {
                     await userManager.CreateAsync(applicationUser,"123Pasword!");
-                    await userManager.AddToRoleAsync(applicationUser, Roles.Client.ToString());
+                    await userManager.AddToRoleAsync(applicationUser, Roles.mesero.ToString());
                 }
 
             }

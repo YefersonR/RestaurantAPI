@@ -1,4 +1,5 @@
 ﻿using Core.Application.ViewModels.Mesa;
+using Core.Application.ViewModels.Ordenes;
 using Core.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Core.Application.Interfaces.Services
 {
     public interface IMesaService : IGenericService<MesaSaveViewModel, MesaViewModel, Mesa>
     {
+        Task<List<OrdenViewModel>> GetAllOrdenesAsync(int id);
     }
 }

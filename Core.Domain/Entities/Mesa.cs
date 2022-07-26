@@ -11,6 +11,7 @@ namespace Core.Domain.Entities
     {
         public int CantidadPersonas { get; set; }
         public string Descripcion { get; set; }
-        public string Estados { get; set; }
+        public string Estado { get; set; }
+        public List<Orden> Ordenes { get; set; }
     }
 }

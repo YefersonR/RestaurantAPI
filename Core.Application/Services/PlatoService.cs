@@ -3,6 +3,8 @@ using Core.Application.Interfaces.Repositories;
 using Core.Application.Interfaces.Services;
 using Core.Application.ViewModels.Platos;
 using Core.Domain.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Core.Application.Services
 {

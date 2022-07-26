@@ -2,6 +2,7 @@
 using Core.Application.Interfaces.Services;
 using Core.Application.Services;
 using Core.Application.ViewModels.Platos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +13,8 @@ using System.Threading.Tasks;
 namespace RestauranteWebApi.Controllers.v   
 {
     [ApiVersion("1.0")]
+    [Authorize(Roles = "administrador")]
+
     public class PlatoController : BaseApiController
     {
         private readonly IPlatoService _platoService;

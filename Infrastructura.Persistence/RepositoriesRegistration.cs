@@ -29,7 +29,12 @@ namespace Infrastructure.Persistence
             }
 
             services.AddTransient(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-          
+            services.AddTransient<IIngredienteRepository,IngredienteRepository>();
+            services.AddTransient<IMesaRepository, MesaRepository>();
+            services.AddTransient<IOrdenRepository, OrdenRepository>();
+            services.AddTransient<IPlatoRepository, PlatoRepository>();
+
+
 
         }
     }
