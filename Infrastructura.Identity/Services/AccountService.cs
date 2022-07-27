@@ -120,9 +120,8 @@ namespace Infrastructure.Identity.Services
                 Name = request.FirstName,
                 LastName =request.LastName,
                 UserName = request.UserName,
-                Identification = request.Identification
             };
-
+            user.EmailConfirmed = true;
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
             {
@@ -159,8 +158,8 @@ namespace Infrastructure.Identity.Services
                 Name = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
-                Identification = request.Identification
             };
+            user.EmailConfirmed = true;
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
@@ -173,49 +172,7 @@ namespace Infrastructure.Identity.Services
 
             return response;
         }
-        public async Task<RegisterResponse> RegisterSuperAdmin(RegisterRequest request, string origin)
-        {
-            RegisterResponse response = new();
-
-            response.HasError = false;
-            var userWithSameUserName = await _userManager.FindByNameAsync(request.UserName);
-            if (userWithSameUserName != null)
-            {
-                response.HasError = true;
-                response.Error = $"userName {request.UserName} is already taken";
-                return response;
-            }
-            var userWithSameEmail = await _userManager.FindByEmailAsync(request.Email);
-
-            if (userWithSameEmail != null)
-            {
-                response.HasError = true;
-                response.Error = $"Email {request.Email} is already register";
-                return response;
-            }
-            var user = new ApplicationUser()
-            {
-                Email = request.Email,
-                Name = request.FirstName,
-                LastName = request.LastName,
-                UserName = request.UserName,
-                Identification = request.Identification
-            };
-
-            var result = await _userManager.CreateAsync(user, request.Password);
-            if (!result.Succeeded)
-            {
-                response.HasError = true;
-                response.Error = $"An error ocurred trying to register the user";
-                return response;
-            }
-            await _userManager.AddToRoleAsync(user, Roles.administrador.ToString());
-            await _userManager.AddToRoleAsync(user, Roles.mesero.ToString());
-
-            return response;
-        }
-
-
+ 
         public async Task<ForgotPasswordResponse> ForgotPassword(ForgotPasswordRequest request, string origin)
         {
             ForgotPasswordResponse response = new();

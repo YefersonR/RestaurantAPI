@@ -25,7 +25,7 @@ namespace Core.Application.Services
         }
         public override Task<MesaSaveViewModel> Add(MesaSaveViewModel vm)
         {
-            if(vm.Estado == null)
+            if(vm.Estado == null || vm.Estado == "string")
             {
                 vm.Estado = EstadosMesa.En_Proceso_de_atencion.ToString();
             }

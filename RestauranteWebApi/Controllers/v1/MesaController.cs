@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace RestauranteWebApi.Controllers.v1
 {
     [ApiVersion("1.0")]
-    [Authorize(Roles = "administrador,mesero")]
     public class MesaController : BaseApiController
     {
         private readonly IMesaService _mesaService;
@@ -26,6 +25,7 @@ namespace RestauranteWebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles ="administrador")]
         public async Task<IActionResult> Create(MesaSaveViewModel viewModel)
         {
             try
@@ -47,6 +47,7 @@ namespace RestauranteWebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaSaveViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "administrador")]
         public async Task<IActionResult> Update(int id, MesaSaveViewModel viewModel)
         {
             try
@@ -68,6 +69,7 @@ namespace RestauranteWebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "administrador,mesero")]
         public async Task<IActionResult> List()
         {
             try
@@ -89,12 +91,13 @@ namespace RestauranteWebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(MesaSaveViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "administrador,mesero")]
         public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var result = await _mesaService.GetAllOrdenesAsync(id);
-                if(result == null || result.Count == 0)
+                var result = await _mesaService.GetById(id);
+                if(result == null )
                 {
                     return NotFound();
                 }
@@ -110,13 +113,15 @@ namespace RestauranteWebApi.Controllers.v1
         ////[ProducesResponseType(StatusCodes.Status200OK,Type=typeof(MesaViewModel))]
         ////[ProducesResponseType(StatusCodes.Status404NotFound)]
         ////[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        ///[Authorize(Roles = "mesero")]
+        ///
         //public async Task<IActionResult> GetTableOrden(int id)
         //{
         //    try
         //    {
-        //        var result = await _mesaService.GetById(id);
+        //        var result = await _mesaService.GetAllOrdenesAsync(id);
 
-        //        if (result == null)
+        //        if (result == null || result.Count == 0)
         //        {
         //            return NotFound();
         //        }
@@ -130,6 +135,7 @@ namespace RestauranteWebApi.Controllers.v1
 
         ////[ProducesResponseType(StatusCodes.Status204NoContent)]
         ////[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        ///[Authorize(Roles = "mesero")]
         //public async Task<IActionResult> ChangeStatus(int id, int idEstado)
         //{
         //    try{

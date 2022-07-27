@@ -13,7 +13,6 @@ namespace Core.Application.Interfaces.Services
         Task<string> ConfirmAccount(string userId, string token);
         Task<RegisterResponse> RegisterClients(RegisterRequest request, string origin);
         Task<RegisterResponse> RegisterAdmin(RegisterRequest request, string origin);
-        Task<RegisterResponse> RegisterSuperAdmin(RegisterRequest request, string origin);
         Task<ForgotPasswordResponse> ForgotPassword(ForgotPasswordRequest request, string origin);
         Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequest request);
         Task SignOut();

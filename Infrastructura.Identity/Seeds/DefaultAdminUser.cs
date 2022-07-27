@@ -23,7 +23,6 @@ namespace Infrastructure.Identity.Seeds
                 PhoneNumber = "8096534321",
                 PhoneNumberConfirmed = true,
 
-
             };
         
             if(userManager.Users.All(user=>user.Id != applicationAdmin.Id))
