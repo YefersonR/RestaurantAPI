@@ -1,4 +1,6 @@
-﻿using Core.Application.Interfaces.Services;
+﻿using Core.Application.Enums;
+using Core.Application.Interfaces.Services;
+using Core.Application.ViewModels.MesaOrdenes;
 using Core.Application.ViewModels.Orden;
 using Core.Application.ViewModels.Ordenes;
 using Microsoft.AspNetCore.Authorization;
@@ -15,10 +17,13 @@ namespace RestauranteWebApi.Controllers.v1
     [Authorize(Roles = "mesero")]
     public class OrdenController : BaseApiController
     {
-        private readonly IOrdenService _ordenService;   
-        public OrdenController(IOrdenService ordenService)
+        private readonly IOrdenService _ordenService;
+        public readonly IMesaOrdenesService _MesaOrdenesService;
+
+        public OrdenController(IOrdenService ordenService, IMesaOrdenesService MesaOrdenesService)
         {
             _ordenService = ordenService;
+            _MesaOrdenesService = MesaOrdenesService;
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -32,7 +37,15 @@ namespace RestauranteWebApi.Controllers.v1
                 {
                     return BadRequest();
                 }
-                await _ordenService.Add(viewModel);
+                
+                viewModel.Estados = EstadosMesa.En_Proceso_de_atencion.ToString();
+                var ordenesmesa = viewModel.OrdenesporMesa;
+                viewModel = await _ordenService.Add(viewModel);
+                foreach (MesaOrdenSaveViewModel orden in ordenesmesa)
+                {
+                     orden.Ordenid = viewModel.MesaId;
+                    await _MesaOrdenesService.Add(orden);
+                }
                 return NoContent();
             }
             catch (Exception ex)
@@ -53,7 +66,8 @@ namespace RestauranteWebApi.Controllers.v1
                 {
                     return BadRequest();
                 }
-                await _ordenService.UpdateOrden(viewModel,id);
+                await _ordenService.Update(viewModel,id);
+
                 return NoContent();
             }
             catch(Exception ex)

@@ -31,11 +31,16 @@ namespace Core.Application.Services
             vm.Estados =  EstadosMesa.En_Proceso_de_atencion.ToString();
             return base.Add(vm);
         }
-        public async Task UpdateOrden(OrdenSaveViewModel vm, int ID)
+        public async Task<List<OrdenViewModel>> GetByMesaId(int Id)
         {
-            Orden comment = await _OrdenRepository.GetByIdAsync(ID);
-            comment.Platos = _mapper.Map<List<Plato>>(vm.Platos);
-            await _OrdenRepository.UpdateAsync(comment, ID);
+            var ordenes = await _OrdenRepository.GetAllAsync();
+            var ordenList = ordenes.Where(orden => orden.MesaId == Id).ToList();
+            return _mapper.Map<List<OrdenViewModel>>(ordenList);
+        }
+
+        public Task UpdateOrden(OrdenSaveViewModel vm, int ID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

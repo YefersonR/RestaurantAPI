@@ -16,5 +16,10 @@ namespace Infrastructure.Persistence.Repositories
         {
             _restaurantContext = restaurantContext;
         }
+        public override Task UpdateAsync(Orden entity, int ID)
+        {
+            entity.Id = ID;
+            return base.UpdateAsync(entity, ID);
+        }
     }
 }

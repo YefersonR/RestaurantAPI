@@ -1,4 +1,5 @@
 ﻿using Core.Application.ViewModels.Mesa;
+using Core.Application.ViewModels.MesaOrdenes;
 using Core.Application.ViewModels.Platos;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,9 @@ namespace Core.Application.ViewModels.Orden
 {
     public class OrdenSaveViewModel
     {
+        public int Id { get; set; }
         public int MesaId { get; set; }
-        public List<PlatoViewModel> Platos { get; set; }
+        public List<MesaOrdenSaveViewModel> OrdenesporMesa { get; set; }
         public int Subtotal { get; set; }
         public string Estados { get; set; }
     }

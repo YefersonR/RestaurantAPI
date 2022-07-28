@@ -75,7 +75,8 @@ namespace RestauranteWebApi.Controllers.v
         {
             try
             {
-                var response = await _platoService.GetAllAsync();
+                var response = await _platoService.GetAllViewModelWhitInclude();
+                
                 if(response == null ||response.Count == 0)
                 {
                     return NotFound();

@@ -2,8 +2,10 @@
 using Core.Application.DTOs.Account;
 using Core.Application.ViewModels.Ingrediente;
 using Core.Application.ViewModels.Mesa;
+using Core.Application.ViewModels.MesaOrdenes;
 using Core.Application.ViewModels.Orden;
 using Core.Application.ViewModels.Ordenes;
+using Core.Application.ViewModels.PlatoIngrediente;
 using Core.Application.ViewModels.Platos;
 using Core.Application.ViewModels.User;
 using Core.Domain.Entities;
@@ -69,6 +71,34 @@ namespace Core.Application.Mappings
                         .ForMember(dest => dest.Created, opt => opt.Ignore())
                             .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
                                 .ForMember(dest => dest.Updated, opt => opt.Ignore());
+            
+            CreateMap<PlatoIngredientes, PlatoIngredientesSaveViewModel>()
+                .ReverseMap()
+                    .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+                        .ForMember(dest => dest.Created, opt => opt.Ignore())
+                            .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
+                                .ForMember(dest => dest.Updated, opt => opt.Ignore());
+
+            CreateMap<PlatoIngredientes, PlatoIngredientesViewModel>()
+                .ReverseMap()
+                    .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+                        .ForMember(dest => dest.Created, opt => opt.Ignore())
+                            .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
+                                .ForMember(dest => dest.Updated, opt => opt.Ignore());
+
+            CreateMap<MesaOrdenes, MesaOrdenSaveViewModel>()
+                .ReverseMap()
+                    .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+                        .ForMember(dest => dest.Created, opt => opt.Ignore())
+                            .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
+                                .ForMember(dest => dest.Updated, opt => opt.Ignore());
+
+            CreateMap<MesaOrdenes, MesaOrdenViewModel>()
+                            .ReverseMap()
+                                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+                                    .ForMember(dest => dest.Created, opt => opt.Ignore())
+                                        .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
+                                            .ForMember(dest => dest.Updated, opt => opt.Ignore());
 
             CreateMap<AuthenticationRequest, LoginViewModel>()
                 .ForMember(dest => dest.HasError, opt => opt.Ignore())

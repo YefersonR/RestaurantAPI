@@ -109,58 +109,59 @@ namespace RestauranteWebApi.Controllers.v1
             }
         }
 
-        //[HttpGet("{id}")]
-        ////[ProducesResponseType(StatusCodes.Status200OK,Type=typeof(MesaViewModel))]
-        ////[ProducesResponseType(StatusCodes.Status404NotFound)]
-        ////[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        ///[Authorize(Roles = "mesero")]
-        ///
-        //public async Task<IActionResult> GetTableOrden(int id)
-        //{
-        //    try
-        //    {
-        //        var result = await _mesaService.GetAllOrdenesAsync(id);
+        [HttpGet("GetTableOrden/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK,Type=typeof(MesaViewModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "mesero")]
+        public async Task<IActionResult> GetTableOrden(int id)
+        {
+            try
+            {
+                var result = await _mesaService.GetAllOrdenesAsync(id);
 
-        //        if (result == null || result.Count == 0)
-        //        {
-        //            return NotFound();
-        //        }
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        //    }
-        //}
+                if (result == null || result.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpGet("ChangeStatus/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "mesero")]
+        public async Task<IActionResult> ChangeStatus(int id, int idEstado)
+        {
+            try
+            {
 
-        ////[ProducesResponseType(StatusCodes.Status204NoContent)]
-        ////[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        ///[Authorize(Roles = "mesero")]
-        //public async Task<IActionResult> ChangeStatus(int id, int idEstado)
-        //{
-        //    try{
+                MesaSaveViewModel mesa = await _mesaService.GetById(id);
+                switch (idEstado)
+                {
+                    case 1:
+                        mesa.Estado = EstadosMesa.Disponible.ToString();
+                        break;
+                    case 2:
+                        mesa.Estado = EstadosMesa.En_Proceso_de_atencion.ToString();
+                        break;
+                    case 3:
+                        mesa.Estado = EstadosMesa.Atendida.ToString();
+                        break;
+                }
+                
+                await _mesaService.Update(mesa, id);
 
-        //        MesaSaveViewModel mesa = await _mesaService.GetById(id);
-        //        switch (idEstado)
-        //        {
-        //            case ((int)EstadosMesa.Disponible):
-        //                mesa.Estados = EstadosMesa.Disponible.ToString();
-        //            break;
-        //            case ((int)EstadosMesa.En_Proceso_de_atencion):
-        //                mesa.Estados = EstadosMesa.En_Proceso_de_atencion.ToString();
-        //            break;
-        //            case ((int)EstadosMesa.Atendida):
-        //                mesa.Estados = EstadosMesa.Atendida.ToString();
-        //            break;
-        //        }
-        //        await _mesaService.Update(mesa,mesa.Id);
-
-        //        return NoContent();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
-        //    }
-        //}
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

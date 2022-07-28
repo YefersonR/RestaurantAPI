@@ -18,5 +18,11 @@ namespace Core.Application.Services
             _PlatoRepository = PlatoRepository;
             _mapper = mapper;
         }
+        public async Task<List<PlatoViewModel>> GetAllViewModelWhitInclude()
+        {
+            var IngrediestesPlatos = await _PlatoRepository.GetAllWhitIncludes(new List<string> { "Ingredientes" });
+            var PlatoVm =  _mapper.Map<List<PlatoViewModel>>(IngrediestesPlatos);
+            return PlatoVm;
+        }
     }
 }

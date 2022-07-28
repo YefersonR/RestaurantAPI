@@ -27,8 +27,8 @@ namespace Infrastructure.Persistence.Repositories
 
         public virtual async Task UpdateAsync(Entity entity, int ID)
         {
-            Entity etry = await _dbcontext.Set<Entity>().FindAsync(ID);
-            _dbcontext.Entry(etry).CurrentValues.SetValues(entity);
+            Entity entry = await _dbcontext.Set<Entity>().FindAsync(ID);
+            _dbcontext.Entry(entry).CurrentValues.SetValues(entity);
             await _dbcontext.SaveChangesAsync();
         }
 

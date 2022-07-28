@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructura.Persistence.Migrations
+namespace Infrastructura.Identity.Migrations
 {
-    public partial class InitialMigration1 : Migration
+    public partial class IdentityMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

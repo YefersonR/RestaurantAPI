@@ -18,9 +18,12 @@ namespace Core.Application
             services.AddTransient(typeof(IGenericService<,,>),typeof(GenericService<,,>));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IMesaService, MesaService>();
+            services.AddTransient<IMesaOrdenesService, MesaOrdenesService>();
             services.AddTransient<IOrdenService, OrdenService>();
             services.AddTransient<IPlatoService, PlatoService>();
+            services.AddTransient<IPlatoIngredientesService, PlatoIngredientesService>();
             services.AddTransient<IIngredienteService, IngredienteService>();
+
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

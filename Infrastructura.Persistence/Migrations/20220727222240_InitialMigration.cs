@@ -32,7 +32,7 @@ namespace Infrastructura.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CantidadPersonas = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Estados = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -89,23 +89,29 @@ namespace Infrastructura.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "IngredientePlato",
+                name: "PlatoIngredientes",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IngredienteId = table.Column<int>(type: "int", nullable: false),
-                    PlatoId = table.Column<int>(type: "int", nullable: false)
+                    PlatoId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientePlato", x => new { x.IngredienteId, x.PlatoId });
+                    table.PrimaryKey("PK_PlatoIngredientes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IngredientePlato_Ingredientes_IngredienteId",
+                        name: "FK_PlatoIngredientes_Ingredientes_IngredienteId",
                         column: x => x.IngredienteId,
                         principalTable: "Ingredientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IngredientePlato_Platos_PlatoId",
+                        name: "FK_PlatoIngredientes_Platos_PlatoId",
                         column: x => x.PlatoId,
                         principalTable: "Platos",
                         principalColumn: "Id",
@@ -137,11 +143,6 @@ namespace Infrastructura.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientePlato_PlatoId",
-                table: "IngredientePlato",
-                column: "PlatoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ordenes_MesaId",
                 table: "Ordenes",
                 column: "MesaId");
@@ -150,21 +151,31 @@ namespace Infrastructura.Persistence.Migrations
                 name: "IX_OrdenPlato_PlatosId",
                 table: "OrdenPlato",
                 column: "PlatosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlatoIngredientes_IngredienteId",
+                table: "PlatoIngredientes",
+                column: "IngredienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlatoIngredientes_PlatoId",
+                table: "PlatoIngredientes",
+                column: "PlatoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "IngredientePlato");
-
-            migrationBuilder.DropTable(
                 name: "OrdenPlato");
 
             migrationBuilder.DropTable(
-                name: "Ingredientes");
+                name: "PlatoIngredientes");
 
             migrationBuilder.DropTable(
                 name: "Ordenes");
+
+            migrationBuilder.DropTable(
+                name: "Ingredientes");
 
             migrationBuilder.DropTable(
                 name: "Platos");
