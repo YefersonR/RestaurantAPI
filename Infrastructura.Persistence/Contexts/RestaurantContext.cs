@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence.Contexts
         public DbSet<Plato> Platos { get; set; }
         public DbSet<PlatoIngredientes> PlatoIngredientes { get; set; }
         public DbSet<Ingrediente> Ingredientes{ get; set; }
-        public DbSet<MesaOrdenes> MesaOrdenes { get; set; }
+        public DbSet<OrdenesPlatos> OrdenesPlatos { get; set; }
 
         public RestaurantContext(DbContextOptions<RestaurantContext> options): base(options)
         {}
@@ -44,7 +44,7 @@ namespace Infrastructure.Persistence.Contexts
             #region Primary Key
             modelBuilder.Entity<Mesa>()
                 .HasKey(mesa=>mesa.Id);
-            modelBuilder.Entity<MesaOrdenes>()
+            modelBuilder.Entity<OrdenesPlatos>()
                 .HasKey(mesaorden => mesaorden.Id);
             modelBuilder.Entity<Orden>()
                 .HasKey(orden => orden.Id);
@@ -52,6 +52,8 @@ namespace Infrastructure.Persistence.Contexts
                 .HasKey(plato => plato.Id);
             modelBuilder.Entity<PlatoIngredientes>()
                 .HasKey(platoIngredientes => platoIngredientes.Id);
+            modelBuilder.Entity<OrdenesPlatos>()
+             .HasKey(mesaOrdenes => mesaOrdenes.Id);
             modelBuilder.Entity<Ingrediente>()
                 .HasKey(ingrediente => ingrediente.Id);
             modelBuilder.Entity<PlatoIngredientes>()
@@ -63,8 +65,17 @@ namespace Infrastructure.Persistence.Contexts
 
             #region Relationship
 
+
             modelBuilder.Entity<Orden>()
-                .HasMany<Plato>(platos => platos.Platos);
+                .HasMany<OrdenesPlatos>(Pi => Pi.Platos)
+                .WithOne(p => p.Orden)
+                .HasForeignKey(p => p.OrdenId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Plato>()
+                .HasMany<OrdenesPlatos>(p => p.Ordens)
+                .WithOne(p => p.Plato)
+                .HasForeignKey(p => p.PlatoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Ingrediente>()
                 .HasMany<PlatoIngredientes>(Pi => Pi.Platos)

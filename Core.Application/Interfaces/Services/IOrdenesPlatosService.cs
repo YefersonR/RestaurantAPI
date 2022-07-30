@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Core.Application.Interfaces.Services
 {
-    public interface IMesaOrdenesService : IGenericService<MesaOrdenSaveViewModel, MesaOrdenViewModel, MesaOrdenes>
+    public interface IOrdenesPlatosService : IGenericService<OrdenesPlatosSaveViewModel, OrdenesPlatosViewModel, OrdenesPlatos>
     {
+        Task DeleteByOrdenId(int Id);
     }
 }

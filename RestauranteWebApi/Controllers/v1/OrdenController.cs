@@ -18,12 +18,12 @@ namespace RestauranteWebApi.Controllers.v1
     public class OrdenController : BaseApiController
     {
         private readonly IOrdenService _ordenService;
-        public readonly IMesaOrdenesService _MesaOrdenesService;
+        private readonly IOrdenesPlatosService _ordenesPlatosService;
 
-        public OrdenController(IOrdenService ordenService, IMesaOrdenesService MesaOrdenesService)
+        public OrdenController(IOrdenService ordenService, IOrdenesPlatosService ordenesPlatosService)
         {
             _ordenService = ordenService;
-            _MesaOrdenesService = MesaOrdenesService;
+            _ordenesPlatosService = ordenesPlatosService;
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -37,15 +37,8 @@ namespace RestauranteWebApi.Controllers.v1
                 {
                     return BadRequest();
                 }
-                
-                viewModel.Estados = EstadosMesa.En_Proceso_de_atencion.ToString();
-                var ordenesmesa = viewModel.OrdenesporMesa;
-                viewModel = await _ordenService.Add(viewModel);
-                foreach (MesaOrdenSaveViewModel orden in ordenesmesa)
-                {
-                     orden.Ordenid = viewModel.MesaId;
-                    await _MesaOrdenesService.Add(orden);
-                }
+                await _ordenService.Add(viewModel);
+               
                 return NoContent();
             }
             catch (Exception ex)
@@ -58,7 +51,7 @@ namespace RestauranteWebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id,OrdenSaveViewModel viewModel)
+        public async Task<IActionResult> Update(int id,List<OrdenesPlatosSaveViewModel> viewModel)
         {
             try
             {
@@ -66,7 +59,12 @@ namespace RestauranteWebApi.Controllers.v1
                 {
                     return BadRequest();
                 }
-                await _ordenService.Update(viewModel,id);
+                await _ordenesPlatosService.DeleteByOrdenId(id);
+                foreach (var Orden in viewModel)
+                {
+                    Orden.Ordenid= id;
+                    await _ordenesPlatosService.Add(Orden);
+                }
 
                 return NoContent();
             }
@@ -85,7 +83,7 @@ namespace RestauranteWebApi.Controllers.v1
         {
             try
             {
-                var result = await _ordenService.GetAllAsync();
+                var result = await _ordenService.GetAllViewModelWhitInclude();
                 if(result == null || result.Count == 0)
                 {
                     return NotFound();

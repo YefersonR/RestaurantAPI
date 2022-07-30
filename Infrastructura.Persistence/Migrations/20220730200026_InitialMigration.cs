@@ -119,24 +119,30 @@ namespace Infrastructura.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrdenPlato",
+                name: "OrdenesPlatos",
                 columns: table => new
                 {
-                    OrdensId = table.Column<int>(type: "int", nullable: false),
-                    PlatosId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrdenId = table.Column<int>(type: "int", nullable: false),
+                    PlatoId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrdenPlato", x => new { x.OrdensId, x.PlatosId });
+                    table.PrimaryKey("PK_OrdenesPlatos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrdenPlato_Ordenes_OrdensId",
-                        column: x => x.OrdensId,
+                        name: "FK_OrdenesPlatos_Ordenes_OrdenId",
+                        column: x => x.OrdenId,
                         principalTable: "Ordenes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrdenPlato_Platos_PlatosId",
-                        column: x => x.PlatosId,
+                        name: "FK_OrdenesPlatos_Platos_PlatoId",
+                        column: x => x.PlatoId,
                         principalTable: "Platos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -148,9 +154,14 @@ namespace Infrastructura.Persistence.Migrations
                 column: "MesaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdenPlato_PlatosId",
-                table: "OrdenPlato",
-                column: "PlatosId");
+                name: "IX_OrdenesPlatos_OrdenId",
+                table: "OrdenesPlatos",
+                column: "OrdenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdenesPlatos_PlatoId",
+                table: "OrdenesPlatos",
+                column: "PlatoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlatoIngredientes_IngredienteId",
@@ -166,7 +177,7 @@ namespace Infrastructura.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrdenPlato");
+                name: "OrdenesPlatos");
 
             migrationBuilder.DropTable(
                 name: "PlatoIngredientes");

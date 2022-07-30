@@ -10,5 +10,7 @@ namespace Core.Application.ViewModels.PlatoIngrediente
     {
         public int Id { get; set; }
         public int IngredienteId { get; set; }
+        public int PlatoId { get; set; }
+
     }
 }

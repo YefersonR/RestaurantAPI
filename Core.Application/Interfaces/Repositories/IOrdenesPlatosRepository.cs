@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Application.Interfaces.Repositories
 {
-    public interface IMesaOrdenesRepository : IGenericRepository<MesaOrdenes>
+    public interface IOrdenesPlatosRepository : IGenericRepository<OrdenesPlatos>
     {
     }
 }

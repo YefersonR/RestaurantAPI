@@ -1,6 +1,7 @@
 ﻿using Core.Application.Enums;
 using Core.Application.Interfaces.Services;
 using Core.Application.Services;
+using Core.Application.ViewModels.PlatoIngrediente;
 using Core.Application.ViewModels.Platos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,9 +19,11 @@ namespace RestauranteWebApi.Controllers.v
     public class PlatoController : BaseApiController
     {
         private readonly IPlatoService _platoService;
-        public PlatoController(IPlatoService platoService)
+        private readonly IPlatoIngredientesService _ingredientesPlatosService;
+        public PlatoController(IPlatoService platoService, IPlatoIngredientesService ingredientesPlatosService)
         {
             _platoService = platoService;
+            _ingredientesPlatosService = ingredientesPlatosService;
         }
 
         [HttpPost]
@@ -35,6 +38,7 @@ namespace RestauranteWebApi.Controllers.v
                 {
                     return BadRequest();
                 }
+
 
                 await _platoService.Add(viewModel);
                 return NoContent();
@@ -59,6 +63,7 @@ namespace RestauranteWebApi.Controllers.v
                 {
                     return BadRequest();
                 }
+                await _ingredientesPlatosService.DeleteAllByPlatoId(viewModel.Id); 
                 await _platoService.Update(viewModel, id);
                 return Ok(viewModel);
             }

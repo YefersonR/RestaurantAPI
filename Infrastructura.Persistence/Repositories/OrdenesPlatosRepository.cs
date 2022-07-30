@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructura.Persistence.Repositories
 {
-    public class MesaOrdenesRepository : GenericRepository<MesaOrdenes>, IMesaOrdenesRepository
+    public class OrdenesPlatosRepository : GenericRepository<OrdenesPlatos>, IOrdenesPlatosRepository
     {
         private readonly RestaurantContext _restaurantContext;
-        public MesaOrdenesRepository(RestaurantContext restaurantContext) : base(restaurantContext)
+        public OrdenesPlatosRepository(RestaurantContext restaurantContext) : base(restaurantContext)
         {
             _restaurantContext = restaurantContext;
         }

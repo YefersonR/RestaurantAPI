@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructura.Persistence.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20220727222240_InitialMigration")]
+    [Migration("20220730200026_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,6 +116,40 @@ namespace Infrastructura.Persistence.Migrations
                     b.ToTable("Ordenes");
                 });
 
+            modelBuilder.Entity("Core.Domain.Entities.OrdenesPlatos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrdenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlatoId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrdenId");
+
+                    b.HasIndex("PlatoId");
+
+                    b.ToTable("OrdenesPlatos");
+                });
+
             modelBuilder.Entity("Core.Domain.Entities.Plato", b =>
                 {
                     b.Property<int>("Id")
@@ -186,21 +220,6 @@ namespace Infrastructura.Persistence.Migrations
                     b.ToTable("PlatoIngredientes");
                 });
 
-            modelBuilder.Entity("OrdenPlato", b =>
-                {
-                    b.Property<int>("OrdensId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlatosId")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrdensId", "PlatosId");
-
-                    b.HasIndex("PlatosId");
-
-                    b.ToTable("OrdenPlato");
-                });
-
             modelBuilder.Entity("Core.Domain.Entities.Orden", b =>
                 {
                     b.HasOne("Core.Domain.Entities.Mesa", null)
@@ -208,6 +227,25 @@ namespace Infrastructura.Persistence.Migrations
                         .HasForeignKey("MesaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Core.Domain.Entities.OrdenesPlatos", b =>
+                {
+                    b.HasOne("Core.Domain.Entities.Orden", "Orden")
+                        .WithMany("Platos")
+                        .HasForeignKey("OrdenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Domain.Entities.Plato", "Plato")
+                        .WithMany("Ordens")
+                        .HasForeignKey("PlatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Orden");
+
+                    b.Navigation("Plato");
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.PlatoIngredientes", b =>
@@ -219,7 +257,7 @@ namespace Infrastructura.Persistence.Migrations
                         .IsRequired();
 
                     b.HasOne("Core.Domain.Entities.Plato", "Plato")
-                        .WithMany("Ingrediente")
+                        .WithMany("Ingredientes")
                         .HasForeignKey("PlatoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -227,21 +265,6 @@ namespace Infrastructura.Persistence.Migrations
                     b.Navigation("Ingrediente");
 
                     b.Navigation("Plato");
-                });
-
-            modelBuilder.Entity("OrdenPlato", b =>
-                {
-                    b.HasOne("Core.Domain.Entities.Orden", null)
-                        .WithMany()
-                        .HasForeignKey("OrdensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Domain.Entities.Plato", null)
-                        .WithMany()
-                        .HasForeignKey("PlatosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.Ingrediente", b =>
@@ -254,9 +277,16 @@ namespace Infrastructura.Persistence.Migrations
                     b.Navigation("Ordenes");
                 });
 
+            modelBuilder.Entity("Core.Domain.Entities.Orden", b =>
+                {
+                    b.Navigation("Platos");
+                });
+
             modelBuilder.Entity("Core.Domain.Entities.Plato", b =>
                 {
-                    b.Navigation("Ingrediente");
+                    b.Navigation("Ingredientes");
+
+                    b.Navigation("Ordens");
                 });
 #pragma warning restore 612, 618
         }

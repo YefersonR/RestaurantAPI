@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.Application.ViewModels.MesaOrdenes
 {
-    public class MesaOrdenSaveViewModel
+    public class OrdenesPlatosViewModel
     {
         public int Platoid { get; set; }
-        public int Ordenid { get; set; }
 
     }
 }

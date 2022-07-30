@@ -12,7 +12,6 @@ namespace Core.Domain.Entities
         public int MesaId { get; set; }
         public int Subtotal { get; set; }
         public string Estados { get; set; }
-        public Mesa Mesa { get; set; }
-        public List<Plato> Platos { get; set; }
+        public List<OrdenesPlatos> Platos { get; set; }
     }
 }

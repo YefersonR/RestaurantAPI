@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Domain.Entities
 {
-    public class MesaOrdenes : AuditableBase
+    public class OrdenesPlatos : AuditableBase
     {
         public int OrdenId { get; set; }
         public Orden Orden { get; set; }

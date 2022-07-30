@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public virtual async Task<Entity> AddAsync(Entity entity)
         {
-            await _dbcontext.Set<Entity>().AddAsync(entity);
+            await _dbcontext.Set<Entity>().AddAsync(entity);    
             await _dbcontext.SaveChangesAsync();
             return entity;
         }

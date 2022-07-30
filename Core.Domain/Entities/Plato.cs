@@ -13,7 +13,7 @@ namespace Core.Domain.Entities
         public int Precio { get; set; }
         public int CantidadPersonas { get; set; }
         public List<PlatoIngredientes> Ingredientes { get; set; }
-        public List<Orden> Ordens { get; set; } 
+        public List<OrdenesPlatos> Ordens { get; set; } 
         public string Categoria { get; set; }
 
 

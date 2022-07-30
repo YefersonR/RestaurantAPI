@@ -22,6 +22,15 @@ namespace Core.Application.Services
             _PlatoIngredientesRepository = PlatoIngredientesRepository;
             _mapper = mapper;
         }
+        public async Task DeleteAllByPlatoId(int Id)
+        {
+            var ingredientes = await _PlatoIngredientesRepository.GetAllAsync();
+            var ingredientesList = ingredientes.Where(i => i.PlatoId == Id).ToList();
+            foreach (var i in ingredientesList)
+            {
+                await _PlatoIngredientesRepository.DeleteAsync(i);
+            }
+        }
     }
 
 }
