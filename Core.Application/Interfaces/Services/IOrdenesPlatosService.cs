@@ -11,5 +11,6 @@ namespace Core.Application.Interfaces.Services
     public interface IOrdenesPlatosService : IGenericService<OrdenesPlatosSaveViewModel, OrdenesPlatosViewModel, OrdenesPlatos>
     {
         Task DeleteByOrdenId(int Id);
+        Task<List<OrdenesPlatosSaveViewModel>> GetAll();
     }
 }

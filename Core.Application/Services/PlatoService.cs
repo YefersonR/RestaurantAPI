@@ -37,9 +37,25 @@ namespace Core.Application.Services
         }
         public async Task<List<PlatoViewModel>> GetAllViewModelWhitInclude()
         {
-            var IngrediestesPlatos = await _PlatoRepository.GetAllWhitIncludes(new List<string> { "Ingredientes" });
-            var PlatoVm =  _mapper.Map<List<PlatoViewModel>>(IngrediestesPlatos);
+            var Platos = await _PlatoRepository.GetAllWhitIncludes(new List<string> { "Ingredientes" });
+            var IngrediestesPlatos = await _PlatoIngredientesService.GetAll();
+            var PlatoIngrediente = from p in Platos
+                                   join i in IngrediestesPlatos
+                                   on p.Id equals i.PlatoId
+                                select p;
+
+            var PlatoVm =  _mapper.Map<List<PlatoViewModel>>(Platos);
             return PlatoVm;
+        }
+        public async Task<PlatoViewModel> GetByPlatoId(int Id)
+        {
+            var platos = await _PlatoIngredientesService.GetAll();
+            var platosList = platos.Where(plato => plato.PlatoId == Id).ToList();
+
+            var ListIngrediente = _mapper.Map<List<PlatoIngredientesViewModel>>(platosList);
+            PlatoViewModel ordenViewModel = new();
+            ordenViewModel.Ingredientes = ListIngrediente;
+            return ordenViewModel;
         }
     }
 }

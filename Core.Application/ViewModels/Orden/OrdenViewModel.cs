@@ -13,7 +13,7 @@ namespace Core.Application.ViewModels.Ordenes
     {
         public int Id { get; set; }
         public int MesaId { get; set; }
-        public List<OrdenesPlatosSaveViewModel> OrdenesporMesa { get; set; }
+        public List<OrdenesPlatosSaveViewModel> Platos { get; set; }
 
         public int Subtotal { get; set; }
         public string Estados { get; set; }

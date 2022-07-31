@@ -31,6 +31,11 @@ namespace Core.Application.Services
                 await _PlatoIngredientesRepository.DeleteAsync(i);
             }
         }
+        public async Task<List<PlatoIngredientesSaveViewModel>> GetAll()
+        {
+            var OrdenesPlatos = await _PlatoIngredientesRepository.GetAllAsync();
+            return _mapper.Map<List<PlatoIngredientesSaveViewModel>>(OrdenesPlatos);
+        }
     }
 
 }

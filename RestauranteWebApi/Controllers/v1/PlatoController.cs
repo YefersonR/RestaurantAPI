@@ -102,7 +102,7 @@ namespace RestauranteWebApi.Controllers.v
             try
             {
 
-                var response = await _platoService.GetById(id);
+                var response = await _platoService.GetByPlatoId(id);
                 if(response == null)
                 {
                     return NotFound();

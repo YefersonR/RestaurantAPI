@@ -11,5 +11,6 @@ namespace Core.Application.Interfaces.Services
     public interface IPlatoIngredientesService : IGenericService<PlatoIngredientesSaveViewModel, PlatoIngredientesViewModel, PlatoIngredientes>
     {
         Task DeleteAllByPlatoId(int Id);
+        Task<List<PlatoIngredientesSaveViewModel>> GetAll();
     }
 }

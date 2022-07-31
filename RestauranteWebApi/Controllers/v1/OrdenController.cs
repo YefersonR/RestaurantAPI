@@ -103,7 +103,7 @@ namespace RestauranteWebApi.Controllers.v1
         {
             try
             {
-                var result = await _ordenService.GetById(id);
+                var result = await _ordenService.GetByMesaId(id);
                 if(result == null)
                 {
                     return NotFound();

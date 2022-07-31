@@ -11,5 +11,6 @@ namespace Core.Application.Interfaces.Services
     public interface IPlatoService : IGenericService<PlatoSaveViewModel, PlatoViewModel, Plato>
     {
         Task<List<PlatoViewModel>> GetAllViewModelWhitInclude();
+        Task<PlatoViewModel> GetByPlatoId(int Id);
     }
 }

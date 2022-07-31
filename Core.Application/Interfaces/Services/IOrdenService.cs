@@ -12,5 +12,6 @@ namespace Core.Application.Interfaces.Services
     public interface IOrdenService : IGenericService<OrdenSaveViewModel, OrdenViewModel, Orden>
     {
         Task<List<OrdenViewModel>> GetAllViewModelWhitInclude();
+        Task<OrdenViewModel> GetByMesaId(int Id);
     }
 }

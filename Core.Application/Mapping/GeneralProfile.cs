@@ -93,10 +93,15 @@ namespace Core.Application.Mappings
                             .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
                                 .ForMember(dest => dest.Updated, opt => opt.Ignore());
 
-            CreateMap<OrdenesPlatosSaveViewModel, OrdenesPlatosViewModel>()
+            CreateMap<PlatoIngredientesSaveViewModel, PlatoIngredientesViewModel>()
                 .ReverseMap()
-                    .ForMember(dest => dest.Ordenid, opt => opt.Ignore());
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.PlatoId, opt => opt.Ignore());
             
+
+            CreateMap<OrdenesPlatosSaveViewModel, OrdenesPlatosViewModel>()
+               .ReverseMap()
+                   .ForMember(dest => dest.Ordenid, opt => opt.Ignore());
 
             CreateMap<OrdenesPlatos, OrdenesPlatosViewModel>()
                             .ReverseMap()

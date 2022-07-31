@@ -30,5 +30,10 @@ namespace Core.Application.Services
                 await _OrdenesPlatosRepository.DeleteAsync(Orden);
             }
         }
+        public async Task<List<OrdenesPlatosSaveViewModel>> GetAll()
+        {
+             var OrdenesPlatos =   await _OrdenesPlatosRepository.GetAllAsync();
+            return _mapper.Map<List<OrdenesPlatosSaveViewModel>>(OrdenesPlatos);
+        }
     }
 }
