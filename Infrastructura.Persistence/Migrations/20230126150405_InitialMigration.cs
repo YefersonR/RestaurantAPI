@@ -69,9 +69,9 @@ namespace Infrastructura.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MesaId = table.Column<int>(type: "int", nullable: false),
                     Subtotal = table.Column<int>(type: "int", nullable: false),
                     Estados = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MesaId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -89,64 +89,57 @@ namespace Infrastructura.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlatoIngredientes",
+                name: "IngredientePlato",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IngredienteId = table.Column<int>(type: "int", nullable: false),
-                    PlatoId = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    IngredientesId = table.Column<int>(type: "int", nullable: false),
+                    PlatosId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlatoIngredientes", x => x.Id);
+                    table.PrimaryKey("PK_IngredientePlato", x => new { x.IngredientesId, x.PlatosId });
                     table.ForeignKey(
-                        name: "FK_PlatoIngredientes_Ingredientes_IngredienteId",
-                        column: x => x.IngredienteId,
+                        name: "FK_IngredientePlato_Ingredientes_IngredientesId",
+                        column: x => x.IngredientesId,
                         principalTable: "Ingredientes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PlatoIngredientes_Platos_PlatoId",
-                        column: x => x.PlatoId,
+                        name: "FK_IngredientePlato_Platos_PlatosId",
+                        column: x => x.PlatosId,
                         principalTable: "Platos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrdenesPlatos",
+                name: "OrdenPlato",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrdenId = table.Column<int>(type: "int", nullable: false),
-                    PlatoId = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    OrdenesId = table.Column<int>(type: "int", nullable: false),
+                    PlatosId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrdenesPlatos", x => x.Id);
+                    table.PrimaryKey("PK_OrdenPlato", x => new { x.OrdenesId, x.PlatosId });
                     table.ForeignKey(
-                        name: "FK_OrdenesPlatos_Ordenes_OrdenId",
-                        column: x => x.OrdenId,
+                        name: "FK_OrdenPlato_Ordenes_OrdenesId",
+                        column: x => x.OrdenesId,
                         principalTable: "Ordenes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrdenesPlatos_Platos_PlatoId",
-                        column: x => x.PlatoId,
+                        name: "FK_OrdenPlato_Platos_PlatosId",
+                        column: x => x.PlatosId,
                         principalTable: "Platos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IngredientePlato_PlatosId",
+                table: "IngredientePlato",
+                column: "PlatosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ordenes_MesaId",
@@ -154,39 +147,24 @@ namespace Infrastructura.Persistence.Migrations
                 column: "MesaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdenesPlatos_OrdenId",
-                table: "OrdenesPlatos",
-                column: "OrdenId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrdenesPlatos_PlatoId",
-                table: "OrdenesPlatos",
-                column: "PlatoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatoIngredientes_IngredienteId",
-                table: "PlatoIngredientes",
-                column: "IngredienteId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlatoIngredientes_PlatoId",
-                table: "PlatoIngredientes",
-                column: "PlatoId");
+                name: "IX_OrdenPlato_PlatosId",
+                table: "OrdenPlato",
+                column: "PlatosId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrdenesPlatos");
+                name: "IngredientePlato");
 
             migrationBuilder.DropTable(
-                name: "PlatoIngredientes");
-
-            migrationBuilder.DropTable(
-                name: "Ordenes");
+                name: "OrdenPlato");
 
             migrationBuilder.DropTable(
                 name: "Ingredientes");
+
+            migrationBuilder.DropTable(
+                name: "Ordenes");
 
             migrationBuilder.DropTable(
                 name: "Platos");

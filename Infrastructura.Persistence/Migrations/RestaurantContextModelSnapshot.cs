@@ -114,40 +114,6 @@ namespace Infrastructura.Persistence.Migrations
                     b.ToTable("Ordenes");
                 });
 
-            modelBuilder.Entity("Core.Domain.Entities.OrdenesPlatos", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OrdenId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlatoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrdenId");
-
-                    b.HasIndex("PlatoId");
-
-                    b.ToTable("OrdenesPlatos");
-                });
-
             modelBuilder.Entity("Core.Domain.Entities.Plato", b =>
                 {
                     b.Property<int>("Id")
@@ -184,107 +150,80 @@ namespace Infrastructura.Persistence.Migrations
                     b.ToTable("Platos");
                 });
 
-            modelBuilder.Entity("Core.Domain.Entities.PlatoIngredientes", b =>
+            modelBuilder.Entity("IngredientePlato", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IngredienteId")
+                    b.Property<int>("IngredientesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlatoId")
+                    b.Property<int>("PlatosId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime2");
+                    b.HasKey("IngredientesId", "PlatosId");
 
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("PlatosId");
 
-                    b.HasKey("Id");
+                    b.ToTable("IngredientePlato");
+                });
 
-                    b.HasIndex("IngredienteId");
+            modelBuilder.Entity("OrdenPlato", b =>
+                {
+                    b.Property<int>("OrdenesId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("PlatoId");
+                    b.Property<int>("PlatosId")
+                        .HasColumnType("int");
 
-                    b.ToTable("PlatoIngredientes");
+                    b.HasKey("OrdenesId", "PlatosId");
+
+                    b.HasIndex("PlatosId");
+
+                    b.ToTable("OrdenPlato");
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.Orden", b =>
                 {
-                    b.HasOne("Core.Domain.Entities.Mesa", null)
+                    b.HasOne("Core.Domain.Entities.Mesa", "Mesa")
                         .WithMany("Ordenes")
                         .HasForeignKey("MesaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Mesa");
                 });
 
-            modelBuilder.Entity("Core.Domain.Entities.OrdenesPlatos", b =>
+            modelBuilder.Entity("IngredientePlato", b =>
                 {
-                    b.HasOne("Core.Domain.Entities.Orden", "Orden")
-                        .WithMany("Platos")
-                        .HasForeignKey("OrdenId")
+                    b.HasOne("Core.Domain.Entities.Ingrediente", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Domain.Entities.Plato", "Plato")
-                        .WithMany("Ordens")
-                        .HasForeignKey("PlatoId")
+                    b.HasOne("Core.Domain.Entities.Plato", null)
+                        .WithMany()
+                        .HasForeignKey("PlatosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Orden");
-
-                    b.Navigation("Plato");
                 });
 
-            modelBuilder.Entity("Core.Domain.Entities.PlatoIngredientes", b =>
+            modelBuilder.Entity("OrdenPlato", b =>
                 {
-                    b.HasOne("Core.Domain.Entities.Ingrediente", "Ingrediente")
-                        .WithMany("Platos")
-                        .HasForeignKey("IngredienteId")
+                    b.HasOne("Core.Domain.Entities.Orden", null)
+                        .WithMany()
+                        .HasForeignKey("OrdenesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Domain.Entities.Plato", "Plato")
-                        .WithMany("Ingredientes")
-                        .HasForeignKey("PlatoId")
+                    b.HasOne("Core.Domain.Entities.Plato", null)
+                        .WithMany()
+                        .HasForeignKey("PlatosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Ingrediente");
-
-                    b.Navigation("Plato");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.Ingrediente", b =>
-                {
-                    b.Navigation("Platos");
                 });
 
             modelBuilder.Entity("Core.Domain.Entities.Mesa", b =>
                 {
                     b.Navigation("Ordenes");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.Orden", b =>
-                {
-                    b.Navigation("Platos");
-                });
-
-            modelBuilder.Entity("Core.Domain.Entities.Plato", b =>
-                {
-                    b.Navigation("Ingredientes");
-
-                    b.Navigation("Ordens");
                 });
 #pragma warning restore 612, 618
         }

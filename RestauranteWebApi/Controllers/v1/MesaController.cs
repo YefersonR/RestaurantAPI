@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestauranteWebApi.Controllers.v1
@@ -43,6 +41,7 @@ namespace RestauranteWebApi.Controllers.v1
             }
         }
 
+        
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaSaveViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,7 +63,7 @@ namespace RestauranteWebApi.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
+        
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MesaViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -131,6 +130,7 @@ namespace RestauranteWebApi.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        
         [HttpGet("ChangeStatus/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -141,18 +141,13 @@ namespace RestauranteWebApi.Controllers.v1
             {
 
                 MesaSaveViewModel mesa = await _mesaService.GetById(id);
-                switch (idEstado)
+                mesa.Estado = idEstado switch
                 {
-                    case 1:
-                        mesa.Estado = EstadosMesa.Disponible.ToString();
-                        break;
-                    case 2:
-                        mesa.Estado = EstadosMesa.En_Proceso_de_atencion.ToString();
-                        break;
-                    case 3:
-                        mesa.Estado = EstadosMesa.Atendida.ToString();
-                        break;
-                }
+                    1 => EstadosMesa.Disponible.ToString(),
+                    2 => EstadosMesa.En_Proceso_de_atencion.ToString(),
+                    3 => EstadosMesa.Atendida.ToString(),
+                    _=> "Invalid State"
+                };
                 
                 await _mesaService.Update(mesa, id);
 

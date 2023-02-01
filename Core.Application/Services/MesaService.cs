@@ -23,27 +23,41 @@ namespace Core.Application.Services
             _OrdenRepository = ordenRepository;
             _mapper = mapper;
         }
-        public override Task<MesaSaveViewModel> Add(MesaSaveViewModel vm)
+        public override async Task<MesaSaveViewModel> Add(MesaSaveViewModel vm)
         {
-            if(vm.Estado == null || vm.Estado == "string")
+            vm.Estado = EstadosMesa.Disponible.ToString();
+            return await base.Add(vm);
+        }
+        public override async Task Update(MesaSaveViewModel vm, int ID)
+        {
+            var mesas = await _MesaRepository.GetAllWhitIncludes(new List<string> { "Ordenes" });
+            var mesa = mesas.FirstOrDefault(m=>m.Id == ID);
+            if(vm.Estado is null || vm.Estado == "string")
             {
-                vm.Estado = EstadosMesa.En_Proceso_de_atencion.ToString();
+                vm.Estado = mesa.Estado;
             }
-
-            return base.Add(vm);
+            if(vm.Estado == EstadosMesa.Atendida.ToString())
+            {
+                List<Orden> ordenes = await _OrdenRepository.GetAllWhitIncludes();
+                List<Orden> ordenesByMesaId = ordenes.Where(o=>o.MesaId== mesa.Id).ToList();
+                if(ordenesByMesaId is not null || ordenesByMesaId.Count != 0)
+                {
+                    foreach (Orden orden in ordenesByMesaId)
+                    {
+                        orden.Estados = EstadoOrden.Completada.ToString();
+                        await _OrdenRepository.UpdateAsync(orden,orden.Id);
+                    }
+                }
+            }
+            await base.Update(vm, ID);
         }
         public async Task<List<OrdenViewModel>> GetAllOrdenesAsync(int id)
         {
-            List<Orden> ordenes = await _OrdenRepository.GetAllAsync();
-            var mesa = await _MesaRepository.GetAllAsync();
+            var mesa = await _MesaRepository.GetAllWhitIncludes(new List<string> { "Ordenes" });
             mesa = mesa.Where(mesaa=>mesaa.Estado == EstadosMesa.En_Proceso_de_atencion.ToString()).ToList();
-            List<OrdenViewModel> ordenesMesa = _mapper.Map<List<OrdenViewModel>>(ordenes);
-             ordenesMesa= ordenesMesa.Where(orden=>orden.MesaId == id).ToList();
-            var result = (from m in mesa
-                          join o in ordenesMesa
-                          on m.Id equals o.MesaId
-                          where (o.MesaId == o.Id)
-                          select o).ToList();
+            var ordenesMesa = mesa.Select(x => x.Ordenes);
+            List<OrdenViewModel> result = _mapper.Map<List<OrdenViewModel>>(ordenesMesa);
+      
             return result;
         }
     }

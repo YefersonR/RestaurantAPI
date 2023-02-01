@@ -1,6 +1,7 @@
 ﻿using Core.Application.Interfaces.Repositories;
 using Core.Domain.Entities;
 using Infrastructure.Persistence.Contexts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,18 @@ namespace Infrastructure.Persistence.Repositories
         {
             _restaurantContext = restaurantContext;
         }
-        public override Task UpdateAsync(Orden entity, int ID)
+        public async Task UpdateAsync(Orden entity)
         {
-            entity.Id = ID;
-            return base.UpdateAsync(entity, ID);
+            _restaurantContext.Entry(entity).State = EntityState.Modified;
+            await _restaurantContext.SaveChangesAsync();
         }
+        public async Task<List<Orden>> GetAllWhitIncludes()
+        {
+            var query = _restaurantContext.Set<Orden>().Include(orden=>orden.Mesa)
+                                                        .Include(x=>x.Platos)
+                                                        .ThenInclude(plato=>plato.Ingredientes);
+            return await query.ToListAsync();
+        }
+
     }
 }

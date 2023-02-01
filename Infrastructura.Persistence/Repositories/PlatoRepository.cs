@@ -16,6 +16,10 @@ namespace Infrastructure.Persistence.Repositories
         {
             _restaurantContext = restaurantContext;
         }
+        public override Task<Plato> AddAsync(Plato entity)
+        {
+            return base.AddAsync(entity);
+        }
         public override Task UpdateAsync(Plato entity, int ID)
         {
             entity.Id = ID;

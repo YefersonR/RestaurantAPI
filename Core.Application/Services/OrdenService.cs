@@ -2,15 +2,14 @@
 using Core.Application.Enums;
 using Core.Application.Interfaces.Repositories;
 using Core.Application.Interfaces.Services;
-using Core.Application.ViewModels.MesaOrdenes;
+using Core.Application.ViewModels.Ingrediente;
+using Core.Application.ViewModels.Mesa;
 using Core.Application.ViewModels.Orden;
 using Core.Application.ViewModels.Ordenes;
 using Core.Application.ViewModels.Platos;
 using Core.Domain.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Application.Services
@@ -18,56 +17,69 @@ namespace Core.Application.Services
     public class OrdenService : GenericService<OrdenSaveViewModel, OrdenViewModel, Orden>,IOrdenService
     {
         private readonly IOrdenRepository _OrdenRepository;
-        private readonly IIngredienteRepository _ingredienteRepository;
+        private readonly IPlatoRepository _PlatoRepository;
         private readonly IMesaRepository _MesaRepository;
-        public readonly IOrdenesPlatosService _OrdenesPlatoService;
         private readonly IMapper _mapper;
 
-        public OrdenService(IOrdenRepository OrdenRepository, IIngredienteRepository ingredienteRepository, IOrdenesPlatosService OrdenesPlatoService, IOrdenesPlatosRepository MesaOrdenRepository, IMesaRepository MesaRepository, IMapper mapper) : base(OrdenRepository, mapper)
+        public OrdenService(IOrdenRepository OrdenRepository, IPlatoRepository platoRepository, IMesaRepository MesaRepository, IMapper mapper) : base(OrdenRepository, mapper)
         {
-            _OrdenesPlatoService = OrdenesPlatoService;
-            _ingredienteRepository = ingredienteRepository;
+            _PlatoRepository = platoRepository;
             _OrdenRepository = OrdenRepository;
             _mapper = mapper;
             _MesaRepository = MesaRepository;
         }
         public override async Task<OrdenSaveViewModel> Add(OrdenSaveViewModel vm)
         {
-            vm.Estados =  EstadosMesa.En_Proceso_de_atencion.ToString();
-
-            OrdenesPlatosSaveViewModel ordenMesaVm = new();
-            var Orden = await base.Add(vm);
-            foreach (OrdenesPlatosViewModel orden in vm.Platos)
+            vm.Estados = EstadoOrden.En_Proceso.ToString();
+            Orden orden = _mapper.Map<Orden>(vm);
+            foreach (int PlatoId in vm.Platos)
             {
-                ordenMesaVm.Platoid = orden.Platoid;
-                ordenMesaVm.Ordenid = Orden.Id;
-                await _OrdenesPlatoService.Add(ordenMesaVm);
+                Plato plato = await _PlatoRepository.GetByIdAsync(PlatoId);
+                orden.Platos.Add(plato);
+                orden.Subtotal += plato.Precio;
             }
+            Mesa mesa =  await _MesaRepository.GetByIdAsync(vm.MesaId);
+            mesa.Estado = EstadosMesa.En_Proceso_de_atencion.ToString();
+            orden.Mesa = mesa;
+            await _MesaRepository.UpdateAsync(mesa, mesa.Id);
+            await _OrdenRepository.AddAsync(orden);
             return vm;
+        }
+        public async Task UpdateOrden(EditOrdenViewModel vm, int ID)
+        {
+            List<Orden> ordenes = await _OrdenRepository.GetAllWhitIncludes();
+            Orden orden = ordenes.FirstOrDefault(o=>o.Id == ID);
+            orden.Mesa = await _MesaRepository.GetByIdAsync(orden.MesaId);
+            orden.Subtotal = 0;
+            orden.Platos.Clear();
+            foreach (int PlatoId in vm.Platos)
+            {
+                Plato plato = await _PlatoRepository.GetByIdAsync(PlatoId);
+                orden.Platos.Add(plato);
+                orden.Subtotal += plato.Precio;
+            }
+            await _OrdenRepository.UpdateAsync(orden);
         }
         public async Task<List<OrdenViewModel>> GetAllViewModelWhitInclude()
         {
-            var PlatoOrden = await _OrdenRepository.GetAllWhitIncludes(new List<string> { "Platos" });
-            var ordenes = await _OrdenesPlatoService.GetAll();
-            var PlatoPorOrden = from i in PlatoOrden
-                                join o in ordenes
-                                on i.Id equals o.Ordenid
-                                select i;
+            List<Orden> ordenes = await _OrdenRepository.GetAllWhitIncludes();
+            ordenes.ForEach(async orden =>
+            {
+                orden.Mesa = await _MesaRepository.GetByIdAsync(orden.MesaId);
+            });
+            List<OrdenViewModel> ordenesViewModel = _mapper.Map<List<OrdenViewModel>>(ordenes);
 
-
-            var PlatoVm = _mapper.Map<List<OrdenViewModel>>(PlatoPorOrden);
-            return PlatoVm;
+            return ordenesViewModel;
         }
-        public async Task<OrdenViewModel> GetByMesaId(int Id)
+        public async Task<OrdenViewModel> GetByIdOrden(int Id)
         {
-            var ordenes = await _OrdenesPlatoService.GetAll();
-            var ordenList = ordenes.Where(orden => orden.Ordenid == Id).ToList();
+            List<Orden> ordenes = await _OrdenRepository.GetAllWhitIncludes();
+            
+            Orden orden = ordenes.FirstOrDefault(o=>o.Id == Id);
+            orden.Mesa = await _MesaRepository.GetByIdAsync(orden.MesaId);
 
-            var ListOrdenPlato =  _mapper.Map<List<OrdenesPlatosSaveViewModel>>(ordenList);
-            OrdenViewModel ordenViewModel = new();
-            ordenViewModel.MesaId = Id;
-        
-            ordenViewModel.Platos = ListOrdenPlato;
+            OrdenViewModel ordenViewModel = _mapper.Map<OrdenViewModel>(orden);
+            
             return ordenViewModel;
         }
 

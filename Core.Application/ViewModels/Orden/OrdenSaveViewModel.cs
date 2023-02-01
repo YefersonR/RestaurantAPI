@@ -1,20 +1,18 @@
-﻿using Core.Application.ViewModels.Mesa;
-using Core.Application.ViewModels.MesaOrdenes;
-using Core.Application.ViewModels.Platos;
-using System;
+﻿using Core.Application.ViewModels.Platos;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Core.Application.ViewModels.Orden
 {
     public class OrdenSaveViewModel
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public int MesaId { get; set; }
-        public List<OrdenesPlatosViewModel> Platos { get; set; }
+        public List<int> Platos { get; set; } = new();
+        [JsonIgnore]
         public int Subtotal { get; set; }
+        [JsonIgnore]
         public string Estados { get; set; }
     }
 }

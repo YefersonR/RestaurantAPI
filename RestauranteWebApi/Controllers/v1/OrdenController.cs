@@ -1,8 +1,7 @@
-﻿using Core.Application.Enums;
-using Core.Application.Interfaces.Services;
-using Core.Application.ViewModels.MesaOrdenes;
+﻿using Core.Application.Interfaces.Services;
 using Core.Application.ViewModels.Orden;
 using Core.Application.ViewModels.Ordenes;
+using Core.Application.ViewModels.Platos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +17,12 @@ namespace RestauranteWebApi.Controllers.v1
     public class OrdenController : BaseApiController
     {
         private readonly IOrdenService _ordenService;
-        private readonly IOrdenesPlatosService _ordenesPlatosService;
-
-        public OrdenController(IOrdenService ordenService, IOrdenesPlatosService ordenesPlatosService)
+        
+        public OrdenController(IOrdenService ordenService)
         {
             _ordenService = ordenService;
-            _ordenesPlatosService = ordenesPlatosService;
         }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -51,7 +49,7 @@ namespace RestauranteWebApi.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id,List<OrdenesPlatosSaveViewModel> viewModel)
+        public async Task<IActionResult> Update(int id, EditOrdenViewModel platos)
         {
             try
             {
@@ -59,13 +57,7 @@ namespace RestauranteWebApi.Controllers.v1
                 {
                     return BadRequest();
                 }
-                await _ordenesPlatosService.DeleteByOrdenId(id);
-                foreach (var Orden in viewModel)
-                {
-                    Orden.Ordenid= id;
-                    await _ordenesPlatosService.Add(Orden);
-                }
-
+                await _ordenService.UpdateOrden(platos,id);
                 return NoContent();
             }
             catch(Exception ex)
@@ -95,6 +87,8 @@ namespace RestauranteWebApi.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
             }
         }
+        
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK,Type=typeof(OrdenSaveViewModel))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -103,7 +97,7 @@ namespace RestauranteWebApi.Controllers.v1
         {
             try
             {
-                var result = await _ordenService.GetByMesaId(id);
+                var result = await _ordenService.GetByIdOrden(id);
                 if(result == null)
                 {
                     return NotFound();
@@ -115,6 +109,7 @@ namespace RestauranteWebApi.Controllers.v1
                 return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
             }
         }
+        
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

@@ -153,8 +153,9 @@ C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\Res
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\RestauranteWebApi.csproj.CoreCompileInputs.cache
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\RestauranteWebApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\RestauranteWebApi.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\scopedcss\bundle\RestauranteWebApi.styles.css
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\staticwebassets\RestauranteWebApi.StaticWebAssets.Manifest.cache
+C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\staticwebassets\RestauranteWebApi.StaticWebAssets.xml
+C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\scopedcss\bundle\RestauranteWebApi.styles.css
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\RestauranteWebApi.RazorTargetAssemblyInfo.cache
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\RestauranteWebApi.csproj.CopyComplete
 C:\Users\user\source\repos\ApiRestaurante\RestauranteWebApi\obj\Debug\net5.0\RestauranteWebApi.dll

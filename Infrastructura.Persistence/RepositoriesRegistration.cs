@@ -1,5 +1,4 @@
 ﻿using Core.Application.Interfaces.Repositories;
-using Infrastructura.Persistence.Repositories;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -32,10 +31,8 @@ namespace Infrastructure.Persistence
             services.AddTransient(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             services.AddTransient<IIngredienteRepository,IngredienteRepository>();
             services.AddTransient<IMesaRepository, MesaRepository>();
-            services.AddTransient<IOrdenesPlatosRepository, OrdenesPlatosRepository>();
             services.AddTransient<IOrdenRepository, OrdenRepository>();
             services.AddTransient<IPlatoRepository, PlatoRepository>();
-            services.AddTransient<IPlatoIngredienteRepository, PlatoIngredienteRepository>();
 
 
 

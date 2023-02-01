@@ -1,11 +1,4 @@
-﻿using Core.Application.ViewModels.MesaOrdenes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Core.Application.ViewModels.Mesa
+﻿namespace Core.Application.ViewModels.Mesa
 {
     public class MesaViewModel
     {

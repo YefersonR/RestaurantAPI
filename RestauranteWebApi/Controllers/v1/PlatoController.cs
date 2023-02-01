@@ -1,29 +1,21 @@
-﻿using Core.Application.Enums;
-using Core.Application.Interfaces.Services;
-using Core.Application.Services;
-using Core.Application.ViewModels.PlatoIngrediente;
+﻿using Core.Application.Interfaces.Services;
 using Core.Application.ViewModels.Platos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestauranteWebApi.Controllers.v   
 {
     [ApiVersion("1.0")]
     [Authorize(Roles = "administrador")]
-
     public class PlatoController : BaseApiController
     {
         private readonly IPlatoService _platoService;
-        private readonly IPlatoIngredientesService _ingredientesPlatosService;
-        public PlatoController(IPlatoService platoService, IPlatoIngredientesService ingredientesPlatosService)
+        public PlatoController(IPlatoService platoService)
         {
             _platoService = platoService;
-            _ingredientesPlatosService = ingredientesPlatosService;
         }
 
         [HttpPost]
@@ -38,9 +30,7 @@ namespace RestauranteWebApi.Controllers.v
                 {
                     return BadRequest();
                 }
-
-
-                await _platoService.Add(viewModel);
+                await _platoService.AddPlato(viewModel);
                 return NoContent();
 
             }
@@ -63,8 +53,8 @@ namespace RestauranteWebApi.Controllers.v
                 {
                     return BadRequest();
                 }
-                await _ingredientesPlatosService.DeleteAllByPlatoId(viewModel.Id); 
-                await _platoService.Update(viewModel, id);
+                //await _ingredientesPlatosService.DeleteAllByPlatoId(viewModel.Id); 
+                await _platoService.UpdatePlato(viewModel, id);
                 return Ok(viewModel);
             }
             catch(Exception ex)
@@ -101,7 +91,6 @@ namespace RestauranteWebApi.Controllers.v
         {
             try
             {
-
                 var response = await _platoService.GetByPlatoId(id);
                 if(response == null)
                 {

@@ -31,10 +31,9 @@ namespace Infrastructura.Identity.Seeds
                 var user = await userManager.FindByEmailAsync(applicationAdmin.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(applicationAdmin, "123Pa$$word!");
+                    await userManager.CreateAsync(applicationAdmin, "SuperAdmin123!");
                     await userManager.AddToRoleAsync(applicationAdmin, Roles.administrador.ToString());
                     await userManager.AddToRoleAsync(applicationAdmin, Roles.mesero.ToString());
-
                 }
             }
         }

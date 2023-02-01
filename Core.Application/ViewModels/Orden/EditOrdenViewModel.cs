@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Application.ViewModels.MesaOrdenes
+namespace Core.Application.ViewModels.Orden
 {
-    public class OrdenesPlatosViewModel
+    public class EditOrdenViewModel
     {
-        public int Platoid { get; set; }
+        public List<int> Platos { get; set; } = new();
 
     }
 }

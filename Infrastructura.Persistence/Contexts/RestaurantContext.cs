@@ -12,12 +12,10 @@ namespace Infrastructure.Persistence.Contexts
 {
     public class RestaurantContext : DbContext
     {
-        public DbSet<Mesa> Mesas { get; set; }
-        public DbSet<Orden> Ordenes{ get; set; }
-        public DbSet<Plato> Platos { get; set; }
-        public DbSet<PlatoIngredientes> PlatoIngredientes { get; set; }
         public DbSet<Ingrediente> Ingredientes{ get; set; }
-        public DbSet<OrdenesPlatos> OrdenesPlatos { get; set; }
+        public DbSet<Plato> Platos { get; set; }
+        public DbSet<Mesa> Mesas { get; set; }
+        public DbSet<Orden> Ordenes { get; set; }
 
         public RestaurantContext(DbContextOptions<RestaurantContext> options): base(options)
         {}
@@ -42,55 +40,21 @@ namespace Infrastructure.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Primary Key
-            modelBuilder.Entity<Mesa>()
-                .HasKey(mesa=>mesa.Id);
-            modelBuilder.Entity<OrdenesPlatos>()
-                .HasKey(mesaorden => mesaorden.Id);
-            modelBuilder.Entity<Orden>()
-                .HasKey(orden => orden.Id);
             modelBuilder.Entity<Plato>()
                 .HasKey(plato => plato.Id);
-            modelBuilder.Entity<PlatoIngredientes>()
-                .HasKey(platoIngredientes => platoIngredientes.Id);
-            modelBuilder.Entity<OrdenesPlatos>()
-             .HasKey(mesaOrdenes => mesaOrdenes.Id);
             modelBuilder.Entity<Ingrediente>()
                 .HasKey(ingrediente => ingrediente.Id);
-            modelBuilder.Entity<PlatoIngredientes>()
-                .HasKey(ingrediente => ingrediente.Id);
-            modelBuilder.Entity<Ingrediente>()
-                .HasKey(ingrediente => ingrediente.Id);
-
-            #endregion
-
-            #region Relationship
-
-
+            modelBuilder.Entity<Mesa>()
+                .HasKey(mesa => mesa.Id);
             modelBuilder.Entity<Orden>()
-                .HasMany<OrdenesPlatos>(Pi => Pi.Platos)
-                .WithOne(p => p.Orden)
-                .HasForeignKey(p => p.OrdenId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Plato>()
-                .HasMany<OrdenesPlatos>(p => p.Ordens)
-                .WithOne(p => p.Plato)
-                .HasForeignKey(p => p.PlatoId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Ingrediente>()
-                .HasMany<PlatoIngredientes>(Pi => Pi.Platos)
-                .WithOne(p => p.Ingrediente)
-                .HasForeignKey(p => p.IngredienteId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Plato>()
-                .HasMany<PlatoIngredientes>(p => p.Ingredientes)
-                .WithOne(p => p.Plato)
-                .HasForeignKey(p => p.PlatoId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-
+                .HasKey(orden => orden.Id);
             #endregion
-
+            #region Relationship
+            modelBuilder.Entity<Mesa>()
+                .HasMany<Orden>(orden=>orden.Ordenes)
+                .WithOne(mesa=>mesa.Mesa)
+                .HasForeignKey(orden=>orden.MesaId);
+            #endregion
         }
     }
 }

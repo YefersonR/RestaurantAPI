@@ -1,9 +1,6 @@
 ﻿using Core.Application.ViewModels.Platos;
 using Core.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.Application.Interfaces.Services
@@ -12,5 +9,8 @@ namespace Core.Application.Interfaces.Services
     {
         Task<List<PlatoViewModel>> GetAllViewModelWhitInclude();
         Task<PlatoViewModel> GetByPlatoId(int Id);
+        Task<PlatoSaveViewModel> AddPlato(PlatoSaveViewModel vm);
+        Task<PlatoSaveViewModel> UpdatePlato(PlatoSaveViewModel platoSaveViewModel, int id);
+
     }
 }
